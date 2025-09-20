@@ -3,7 +3,7 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
-  title: 'WasteMatch Exchange',
+  title: 'EcoSwap',
   description: 'A platform for businesses to exchange waste materials.',
 };
 

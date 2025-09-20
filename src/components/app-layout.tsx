@@ -53,7 +53,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
             <div className="inline-block bg-primary text-primary-foreground rounded-md p-2">
               <RecycleIcon className="h-6 w-6" />
             </div>
-            <h2 className="text-lg font-semibold">WasteMatch</h2>
+            <h2 className="text-lg font-semibold">EcoSwap</h2>
           </div>
         </SidebarHeader>
         <SidebarContent>
