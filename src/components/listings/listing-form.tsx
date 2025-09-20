@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useTransition } from 'react';
+import { useState, useRef, useTransition } from 'react';
 import { getCategoriesForDescription, createListing } from '@/app/actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,7 +14,6 @@ import { Sparkles, Loader2, X } from 'lucide-react';
 import type { WasteCategory } from '@/lib/definitions';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
-
 
 export function ListingForm() {
   const [isSuggesting, startSuggestingTransition] = useTransition();
@@ -35,8 +34,7 @@ export function ListingForm() {
     if (!formRef.current) return;
 
     const formData = new FormData(formRef.current);
-    const description = formData.get('description') as string;
-
+    
     startSuggestingTransition(async () => {
         const result = await getCategoriesForDescription(null, formData);
 
@@ -48,7 +46,7 @@ export function ListingForm() {
 
         if (result.categories && result.categories.length > 0) {
             const newCategories = result.categories.filter(cat => !selectedCategories.includes(cat));
-            setSelectedCategories(prev => [...prev, ...newCategories]);
+            setSelectedCategories(prev => [...new Set([...prev, ...newCategories])]);
         }
     });
   };
@@ -69,7 +67,6 @@ export function ListingForm() {
         });
         router.push('/listings/my-listings');
       } else {
-        // Handle errors, e.g., show a toast
         console.error("Failed to create listing:", result.errors);
          toast({
           title: "Error",
