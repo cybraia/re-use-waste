@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useState, useEffect, useRef, useTransition } from 'react';
+import { useState, useEffect, useRef, useTransition } from 'react';
 import { getCategoriesForDescription, createListing } from '@/app/actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,55 +15,45 @@ import type { WasteCategory } from '@/lib/definitions';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 
-type ErrorState = {
-  description?: string[];
-};
-
-const initialGetCategoriesState: {
-  message: string;
-  categories: WasteCategory[];
-  errors: ErrorState;
-} = {
-  message: '',
-  categories: [],
-  errors: { description: [] },
-};
-
 
 export function ListingForm() {
-  const [getCategoriesState, getCategoriesAction] = useActionState(getCategoriesForDescription, initialGetCategoriesState);
-  const [selectedCategories, setSelectedCategories] = useState<WasteCategory[]>([]);
   const [isSuggesting, startSuggestingTransition] = useTransition();
   const [isCreating, startCreatingTransition] = useTransition();
+  
+  const [selectedCategories, setSelectedCategories] = useState<WasteCategory[]>([]);
+  const [descriptionError, setDescriptionError] = useState<string | null>(null);
 
   const { toast } = useToast();
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
-  const descriptionError = getCategoriesState.errors?.description?.[0];
-
-
-  useEffect(() => {
-    if (getCategoriesState.message === 'Success' && getCategoriesState.categories.length > 0) {
-      const newCategories = getCategoriesState.categories.filter(cat => !selectedCategories.includes(cat));
-      setSelectedCategories(prev => [...prev, ...newCategories]);
-    }
-  }, [getCategoriesState, selectedCategories]);
   
   const handleRemoveCategory = (categoryToRemove: WasteCategory) => {
     setSelectedCategories(selectedCategories.filter(category => category !== categoryToRemove));
   };
 
-  const handleSuggestClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    if (formRef.current) {
-      const formData = new FormData(formRef.current);
-      startSuggestingTransition(() => {
-        getCategoriesAction(formData);
-      });
-    }
+  const handleSuggestClick = async () => {
+    if (!formRef.current) return;
+
+    const formData = new FormData(formRef.current);
+    const description = formData.get('description') as string;
+
+    startSuggestingTransition(async () => {
+        const result = await getCategoriesForDescription(null, formData);
+
+        if (result.errors?.description) {
+            setDescriptionError(result.errors.description[0]);
+        } else {
+            setDescriptionError(null);
+        }
+
+        if (result.categories && result.categories.length > 0) {
+            const newCategories = result.categories.filter(cat => !selectedCategories.includes(cat));
+            setSelectedCategories(prev => [...prev, ...newCategories]);
+        }
+    });
   };
   
-  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!formRef.current) return;
 
@@ -83,7 +73,7 @@ export function ListingForm() {
         console.error("Failed to create listing:", result.errors);
          toast({
           title: "Error",
-          description: "Could not create the listing. Please check the form.",
+          description: "Could not create the listing. Please check the form for errors.",
           variant: "destructive",
         });
       }
@@ -171,7 +161,7 @@ export function ListingForm() {
                 </Alert>
             </div>
             )}
-           <div className="flex items-center justify-end flex-grow">
+           <div className="flex items-center justify-end flex-grow pt-5">
                <Button type="button" variant="outline" disabled={isSuggesting} onClick={handleSuggestClick}>
                 {isSuggesting ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
