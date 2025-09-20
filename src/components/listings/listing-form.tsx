@@ -25,19 +25,18 @@ export function ListingForm() {
   const { toast } = useToast();
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
+  const descriptionRef = useRef<HTMLTextAreaElement>(null);
   
   const handleRemoveCategory = (categoryToRemove: WasteCategory) => {
     setSelectedCategories(selectedCategories.filter(category => category !== categoryToRemove));
   };
 
   const handleSuggestClick = () => {
-    if (!formRef.current) return;
-
-    const formData = new FormData(formRef.current);
+    const description = descriptionRef.current?.value || '';
     setDescriptionError(null);
     
     startSuggestingTransition(async () => {
-        const result = await getCategoriesForDescription(null, formData);
+        const result = await getCategoriesForDescription(description);
 
         if (result.errors?.description) {
             setDescriptionError(result.errors.description[0]);
@@ -139,6 +138,7 @@ export function ListingForm() {
           <Textarea
             id="description"
             name="description"
+            ref={descriptionRef}
             placeholder="Describe the material, its condition, and any other relevant details. Our AI will suggest categories based on this."
             className="min-h-[120px]"
           />

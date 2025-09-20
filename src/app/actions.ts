@@ -10,12 +10,10 @@ const getCategoriesSchema = z.object({
   description: z.string().min(10, { message: "Description must be at least 10 characters long." }),
 });
 
-export async function getCategoriesForDescription(prevState: any, formData: FormData) {
-  console.log('getCategoriesForDescription called');
+export async function getCategoriesForDescription(description: string) {
+  console.log('getCategoriesForDescription called with:', description);
   
-  const validatedFields = getCategoriesSchema.safeParse({
-    description: formData.get('description'),
-  });
+  const validatedFields = getCategoriesSchema.safeParse({ description });
 
   if (!validatedFields.success) {
     return {
