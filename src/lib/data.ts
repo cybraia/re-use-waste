@@ -48,7 +48,9 @@ export const businesses: BusinessProfile[] = [
   },
 ];
 
-export const listings: MaterialListing[] = [
+// In a real app, this would be a database.
+// We're exporting it so we can modify it in our server action.
+export let listings: MaterialListing[] = [
   {
     id: 'l1',
     companyId: 'b1',
