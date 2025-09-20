@@ -15,14 +15,18 @@ import type { WasteCategory } from '@/lib/definitions';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 
+type ErrorState = {
+  description?: string[];
+};
+
 const initialGetCategoriesState: {
   message: string;
   categories: WasteCategory[];
-  errors: { description?: string[] };
+  errors: ErrorState;
 } = {
   message: '',
   categories: [],
-  errors: {},
+  errors: { description: [] },
 };
 
 
@@ -35,6 +39,7 @@ export function ListingForm() {
   const { toast } = useToast();
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
+  const descriptionError = getCategoriesState.errors?.description?.[0];
 
 
   useEffect(() => {
@@ -141,8 +146,10 @@ export function ListingForm() {
             placeholder="Describe the material, its condition, and any other relevant details. Our AI will suggest categories based on this."
             className="min-h-[120px]"
           />
-          {getCategoriesState.errors?.description && (
-            <p className="text-sm text-destructive">{getCategoriesState.errors.description[0]}</p>
+        {descriptionError && (
+            <p className="text-sm text-destructive">
+              {descriptionError}
+            </p>
           )}
         </div>
 

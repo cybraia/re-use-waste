@@ -24,16 +24,18 @@ export async function getCategoriesForDescription(prevState: any, formData: Form
   }
 
   try {
-    const result = await categorizeWasteMaterials({ description: validatedFields.data.description });
-    
-    const validCategories = result.categories.filter(category => 
+    const result = await categorizeWasteMaterials({
+      description: validatedFields.data.description,
+    });
+
+    const validCategories = result.categories.filter(category =>
       [
-        'Plastic', 'Paper', 'Glass', 'Metal', 'Wood', 'Textiles', 
-        'Organic Waste', 'Electronics', 'Construction Debris', 
-        'Chemicals', 'Other'
+        'Plastic', 'Paper', 'Glass', 'Metal', 'Wood', 'Textiles',
+        'Organic Waste', 'Electronics', 'Construction Debris',
+        'Chemicals', 'Other',
       ].includes(category)
     );
-    
+
     return {
       message: 'Success',
       categories: validCategories as WasteCategory[],
@@ -48,6 +50,7 @@ export async function getCategoriesForDescription(prevState: any, formData: Form
     };
   }
 }
+
 
 const createListingSchema = z.object({
   type: z.enum(['offer', 'request']),
