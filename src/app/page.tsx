@@ -26,8 +26,8 @@ export default function LandingPage() {
       </header>
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="py-24 text-center">
-          <div className="container">
+        <section className="py-24">
+          <div className="container text-center">
             <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4">
               Turn Your Waste into Value
             </h1>
