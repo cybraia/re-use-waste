@@ -79,7 +79,7 @@ export async function createListing(formData: FormData) {
     };
   }
 
-  const { name, description, categories, ...rest } = validatedFields.data;
+  const { name, description, categories, quantity, unit, ...rest } = validatedFields.data;
 
   const newListing: MaterialListing = {
     id: `l${Date.now()}`,
@@ -89,6 +89,10 @@ export async function createListing(formData: FormData) {
       description,
       categories: categories as WasteCategory[],
       image: 'https://picsum.photos/seed/new/600/400', // Placeholder for new listings
+    },
+    quantity: {
+      value: quantity,
+      unit: unit,
     },
     postedAt: new Date().toISOString(),
     ...rest,
