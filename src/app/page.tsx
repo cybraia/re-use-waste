@@ -7,7 +7,7 @@ import Image from 'next/image';
 
 export default function LandingPage() {
   return (
-    <div className="flex flex-col min-h-screen bg-background">
+    <div className="flex flex-col min-h-screen bg-background px-10">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-14 items-center">
           <Link href="/" className="flex items-center gap-2 font-bold">
@@ -35,7 +35,7 @@ export default function LandingPage() {
               EcoSwap is the leading marketplace for businesses to connect, trade, and transform waste materials into valuable resources.
             </p>
             <Button size="lg" asChild>
-              <Link href="/dashboard">
+              <Link href="/login">
                 Explore Listings <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>

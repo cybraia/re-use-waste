@@ -1,6 +1,6 @@
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState, useFormStatus } from 'react-dom';
 import { getCategoriesForDescription } from '@/app/actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -33,7 +33,7 @@ function SubmitButton({ label }: { label: string }) {
 }
 
 export function ListingForm() {
-  const [state, formAction] = useFormState(getCategoriesForDescription, initialState);
+  const [state, formAction] = useActionState(getCategoriesForDescription, initialState);
   const [selectedCategories, setSelectedCategories] = useState<WasteCategory[]>([]);
   const { toast } = useToast();
   const router = useRouter();
