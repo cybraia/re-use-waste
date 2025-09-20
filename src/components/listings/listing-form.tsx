@@ -31,7 +31,6 @@ export function ListingForm() {
   };
 
   const handleSuggestClick = () => {
-    console.log("inside handle suggest click");
     if (!formRef.current) return;
 
     const formData = new FormData(formRef.current);
@@ -150,8 +149,8 @@ export function ListingForm() {
           )}
         </div>
         
-        <div className="grid gap-4">
-           <div className="flex items-start justify-end">
+        <div className="space-y-2">
+          <div className="flex justify-end">
              <Button type="button" variant="outline" onClick={handleSuggestClick} disabled={isSuggesting}>
                {isSuggesting ? (
                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
