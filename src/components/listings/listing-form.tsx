@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import { getCategoriesForDescription, createListing } from '@/app/actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,22 +19,19 @@ export function ListingForm() {
   const [isSuggesting, startSuggestingTransition] = useTransition();
   const [isCreating, startCreatingTransition] = useTransition();
   
+  const [description, setDescription] = useState('');
   const [selectedCategories, setSelectedCategories] = useState<WasteCategory[]>([]);
   const [descriptionError, setDescriptionError] = useState<string | null>(null);
 
   const { toast } = useToast();
   const router = useRouter();
-  const formRef = useRef<HTMLFormElement>(null);
-  const descriptionRef = useRef<HTMLTextAreaElement>(null);
   
   const handleRemoveCategory = (categoryToRemove: WasteCategory) => {
     setSelectedCategories(selectedCategories.filter(category => category !== categoryToRemove));
   };
 
   const handleSuggestClick = () => {
-    const description = descriptionRef.current?.value || '';
     setDescriptionError(null);
-    
     startSuggestingTransition(async () => {
         const result = await getCategoriesForDescription(description);
 
@@ -51,16 +48,10 @@ export function ListingForm() {
     });
   };
   
-  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!formRef.current) return;
-  
-    const formData = new FormData(formRef.current);
+    const formData = new FormData(event.currentTarget);
     
-    // Clear any existing categories[] entries first
-    formData.delete('categories[]');
-    
-    // Add selected categories
     selectedCategories.forEach(cat => {
       formData.append('categories[]', cat);
     });
@@ -86,7 +77,7 @@ export function ListingForm() {
   };
 
   return (
-    <form ref={formRef} onSubmit={handleFormSubmit} className="space-y-8">
+    <form onSubmit={handleFormSubmit} className="space-y-8">
       <div className="space-y-2">
         <Label>Listing Type</Label>
         <RadioGroup defaultValue="offer" name="type" className="flex gap-4">
@@ -138,7 +129,8 @@ export function ListingForm() {
           <Textarea
             id="description"
             name="description"
-            ref={descriptionRef}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             placeholder="Describe the material, its condition, and any other relevant details. Our AI will suggest categories based on this."
             className="min-h-[120px]"
           />
@@ -150,7 +142,7 @@ export function ListingForm() {
         </div>
         
         <div className="space-y-2">
-          <div className="flex justify-end">
+           <div className="flex justify-end">
              <Button type="button" variant="outline" onClick={handleSuggestClick} disabled={isSuggesting}>
                {isSuggesting ? (
                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
