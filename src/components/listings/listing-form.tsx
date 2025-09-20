@@ -168,7 +168,7 @@ export function ListingForm() {
             </div>
             )}
            <div className="flex items-center justify-end flex-grow pt-5">
-               <Button type="button" variant="outline" disabled={isSuggesting} onClick={handleSuggestClick}>
+               <Button type="button" variant="outline" onClick={handleSuggestClick} disabled={isSuggesting}>
                 {isSuggesting ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : (
