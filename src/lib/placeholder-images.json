@@ -1,3 +1,52 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "plastic-bottles",
+      "description": "A collection of plastic bottles ready for recycling.",
+      "imageUrl": "https://picsum.photos/seed/1/600/400",
+      "imageHint": "plastic bottles"
+    },
+    {
+      "id": "cardboard-boxes",
+      "description": "Stacks of flattened cardboard boxes.",
+      "imageUrl": "https://picsum.photos/seed/2/600/400",
+      "imageHint": "cardboard boxes"
+    },
+    {
+      "id": "scrap-metal",
+      "description": "A pile of assorted scrap metal parts.",
+      "imageUrl": "https://picsum.photos/seed/3/600/400",
+      "imageHint": "scrap metal"
+    },
+    {
+      "id": "glass-jars",
+      "description": "Empty glass jars of various sizes.",
+      "imageUrl": "https://picsum.photos/seed/4/600/400",
+      "imageHint": "glass jars"
+    },
+    {
+      "id": "wood-pallets",
+      "description": "A stack of wooden pallets.",
+      "imageUrl": "https://picsum.photos/seed/5/600/400",
+      "imageHint": "wood pallets"
+    },
+    {
+      "id": "e-waste",
+      "description": "Old electronic components and devices.",
+      "imageUrl": "https://picsum.photos/seed/6/600/400",
+      "imageHint": "electronic waste"
+    },
+    {
+      "id": "textile-scraps",
+      "description": "Various fabric and textile scraps.",
+      "imageUrl": "https://picsum.photos/seed/7/600/400",
+      "imageHint": "fabric scraps"
+    },
+    {
+      "id": "organic-compost",
+      "description": "Organic waste ready for composting.",
+      "imageUrl": "https://picsum.photos/seed/8/600/400",
+      "imageHint": "compost soil"
+    }
+  ]
 }
