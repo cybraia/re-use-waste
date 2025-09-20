@@ -1,7 +1,6 @@
 'use client';
 
-import { useActionState, useState, useEffect } from 'react';
-import { useFormStatus } from 'react-dom';
+import { useActionState, useState, useEffect, useRef } from 'react';
 import { getCategoriesForDescription } from '@/app/actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -22,60 +21,52 @@ const initialState = {
   errors: {},
 };
 
-function AIActions() {
-  const { pending } = useFormStatus();
-  return (
-    <>
-      <Button type="submit" variant="outline" disabled={pending} name="intent" value="suggest">
-        {pending ? (
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-        ) : (
-          <Sparkles className="mr-2 h-4 w-4" />
-        )}
-        Suggest Categories with AI
-      </Button>
-    </>
-  );
-}
 
 export function ListingForm() {
   const [state, formAction] = useActionState(getCategoriesForDescription, initialState);
   const [selectedCategories, setSelectedCategories] = useState<WasteCategory[]>([]);
+  const [isSuggesting, setIsSuggesting] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
+  const formRef = useRef<HTMLFormElement>(null);
+
 
   useEffect(() => {
     if (state.message === 'Success' && state.categories.length > 0) {
       const newCategories = state.categories.filter(cat => !selectedCategories.includes(cat));
       setSelectedCategories(prev => [...prev, ...newCategories]);
     }
+    setIsSuggesting(false);
   }, [state]);
   
   const handleRemoveCategory = (categoryToRemove: WasteCategory) => {
     setSelectedCategories(selectedCategories.filter(category => category !== categoryToRemove));
   };
+
+  const handleSuggestClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    if (formRef.current) {
+      setIsSuggesting(true);
+      const formData = new FormData(formRef.current);
+      formAction(formData);
+    }
+  };
   
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    const formData = new FormData(event.currentTarget);
-    const intent = (formData.get('intent') as string) || 'create';
-
-    if (intent === 'create') {
-        event.preventDefault();
-        // Here you would typically gather all form data and send to a final creation endpoint
-        toast({
-            title: "Listing Created!",
-            description: "Your new material listing has been successfully created.",
-        });
-        router.push('/listings');
-    }
-    // For 'suggest', the form will submit normally to the server action
+    event.preventDefault();
+    // Here you would typically gather all form data and send to a final creation endpoint
+    toast({
+        title: "Listing Created!",
+        description: "Your new material listing has been successfully created.",
+    });
+    router.push('/listings');
   };
 
   return (
-    <form action={formAction} onSubmit={handleFormSubmit} className="space-y-8">
+    <form ref={formRef} onSubmit={handleFormSubmit} className="space-y-8">
       <div className="space-y-2">
         <Label>Listing Type</Label>
-        <RadioGroup defaultValue="offer" className="flex gap-4">
+        <RadioGroup defaultValue="offer" name="type" className="flex gap-4">
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="offer" id="offer" />
             <Label htmlFor="offer">I&apos;m offering materials</Label>
@@ -151,13 +142,20 @@ export function ListingForm() {
             </div>
             )}
            <div className="flex items-center justify-end flex-grow">
-               <AIActions />
+               <Button type="button" variant="outline" disabled={isSuggesting} onClick={handleSuggestClick}>
+                {isSuggesting ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <Sparkles className="mr-2 h-4 w-4" />
+                )}
+                Suggest Categories
+              </Button>
            </div>
         </div>
       </div>
       
       <div className="border-t pt-8">
-        <Button type="submit" className="w-full" name="intent" value="create">
+        <Button type="submit" className="w-full">
           Create Listing
         </Button>
       </div>

@@ -22,6 +22,7 @@ import {
   User,
   LogOut,
   ChevronDown,
+  List,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -62,7 +63,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
               <SidebarMenuItem key={item.href}>
                 <SidebarMenuButton
                   asChild
-                  isActive={pathname.startsWith(item.href)}
+                  isActive={pathname.startsWith(item.href) && (item.href !== '/listings' || pathname === '/listings')}
                   tooltip={item.label}
                 >
                   <Link href={item.href}>
@@ -107,6 +108,12 @@ export default function AppLayout({ children }: { children: ReactNode }) {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                   <Link href="/profile">Profile</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/listings/my-listings">
+                    <List className="mr-2 h-4 w-4" />
+                    My Listings
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>Settings</DropdownMenuItem>
                 <DropdownMenuSeparator />
