@@ -31,10 +31,11 @@ export function ListingForm() {
   };
 
   const handleSuggestClick = () => {
-    console.log("inside handle suggest click")
+    console.log("inside handle suggest click");
     if (!formRef.current) return;
 
     const formData = new FormData(formRef.current);
+    setDescriptionError(null);
     
     startSuggestingTransition(async () => {
         const result = await getCategoriesForDescription(null, formData);
@@ -149,36 +150,36 @@ export function ListingForm() {
           )}
         </div>
         
-        <div className="space-y-4">
-          <div className="flex items-end justify-end">
-            <Button type="button" variant="outline" onClick={handleSuggestClick} disabled={isSuggesting}>
-              {isSuggesting ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                <Sparkles className="mr-2 h-4 w-4" />
-              )}
-              Suggest Categories
-            </Button>
-          </div>
-
-          {selectedCategories.length > 0 && (
-            <div className="space-y-2">
-                <Label>Suggested Categories</Label>
-                <Alert>
-                    <AlertDescription className="flex flex-wrap gap-2">
-                    {selectedCategories.map((category) => (
-                        <Badge key={category} variant="secondary" className="text-sm">
-                            {category}
-                            <button type="button" onClick={() => handleRemoveCategory(category)} className="ml-2 rounded-full hover:bg-muted-foreground/20 p-0.5">
-                                <X className="h-3 w-3" />
-                            </button>
-                        </Badge>
-                    ))}
-                    </AlertDescription>
-                </Alert>
-            </div>
-          )}
-        </div>
+        <div className="grid gap-4">
+           <div className="flex items-start justify-end">
+             <Button type="button" variant="outline" onClick={handleSuggestClick} disabled={isSuggesting}>
+               {isSuggesting ? (
+                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+               ) : (
+                 <Sparkles className="mr-2 h-4 w-4" />
+               )}
+               Suggest Categories
+             </Button>
+           </div>
+           
+           {selectedCategories.length > 0 && (
+             <div className="space-y-2">
+               <Label>Suggested Categories</Label>
+               <Alert>
+                 <AlertDescription className="flex flex-wrap gap-2">
+                   {selectedCategories.map((category) => (
+                     <Badge key={category} variant="secondary" className="text-sm">
+                       {category}
+                       <button type="button" onClick={() => handleRemoveCategory(category)} className="ml-2 rounded-full hover:bg-muted-foreground/20 p-0.5">
+                         <X className="h-3 w-3" />
+                       </button>
+                     </Badge>
+                   ))}
+                 </AlertDescription>
+               </Alert>
+             </div>
+           )}
+         </div>
       </div>
       
       <div className="border-t pt-8">
