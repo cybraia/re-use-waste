@@ -56,7 +56,7 @@ const createListingSchema = z.object({
   unit: z.enum(['kg', 'ton', 'items', 'm³']),
   location: z.string().min(3, { message: "Location is required." }),
   description: z.string(),
-  categories: z.array(z.string()),
+  categories: z.array(z.string()).optional().default([]),
 });
 
 export async function createListing(formData: FormData) {

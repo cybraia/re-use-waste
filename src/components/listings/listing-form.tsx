@@ -15,7 +15,11 @@ import type { WasteCategory } from '@/lib/definitions';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 
-const initialGetCategoriesState = {
+const initialGetCategoriesState: {
+  message: string;
+  categories: WasteCategory[];
+  errors: { description?: string[] };
+} = {
   message: '',
   categories: [],
   errors: {},
@@ -38,7 +42,7 @@ export function ListingForm() {
       const newCategories = getCategoriesState.categories.filter(cat => !selectedCategories.includes(cat));
       setSelectedCategories(prev => [...prev, ...newCategories]);
     }
-  }, [getCategoriesState]);
+  }, [getCategoriesState, selectedCategories]);
   
   const handleRemoveCategory = (categoryToRemove: WasteCategory) => {
     setSelectedCategories(selectedCategories.filter(category => category !== categoryToRemove));
