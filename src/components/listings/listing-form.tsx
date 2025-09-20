@@ -148,10 +148,9 @@ export function ListingForm() {
             </p>
           )}
         </div>
-
-        <div className="flex items-start justify-between flex-wrap gap-4">
+        <div className="flex flex-col sm:flex-row items-start gap-4">
             {selectedCategories.length > 0 && (
-            <div className="space-y-2 flex-grow min-w-[200px]">
+            <div className="space-y-2 flex-grow">
                 <Label>Suggested Categories</Label>
                 <Alert>
                     <AlertDescription className="flex flex-wrap gap-2">
@@ -167,8 +166,8 @@ export function ListingForm() {
                 </Alert>
             </div>
             )}
-           <div className="flex items-center justify-end flex-grow pt-5">
-               <Button type="button" variant="outline" onClick={handleSuggestClick} disabled={isSuggesting}>
+           <div className="w-full sm:w-auto flex-shrink-0 pt-5">
+               <Button type="button" variant="outline" onClick={handleSuggestClick} disabled={isSuggesting} className="w-full sm:w-auto">
                 {isSuggesting ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : (
