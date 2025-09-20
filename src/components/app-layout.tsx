@@ -38,7 +38,8 @@ import { userProfile } from '@/lib/data';
 
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { href: '/listings', icon: Recycle, label: 'Listings' },
+  { href: '/listings', icon: Recycle, label: 'Listings', exact: true },
+  { href: '/listings/my-listings', icon: List, label: 'My Listings' },
   { href: '/messages', icon: MessageSquare, label: 'Messages' },
   { href: '/profile', icon: User, label: 'Profile' },
 ];
@@ -63,7 +64,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
               <SidebarMenuItem key={item.href}>
                 <SidebarMenuButton
                   asChild
-                  isActive={pathname.startsWith(item.href) && (item.href !== '/listings' || pathname === '/listings')}
+                  isActive={item.exact ? pathname === item.href : pathname.startsWith(item.href)}
                   tooltip={item.label}
                 >
                   <Link href={item.href}>
