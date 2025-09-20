@@ -30,7 +30,7 @@ export function ListingForm() {
     setSelectedCategories(selectedCategories.filter(category => category !== categoryToRemove));
   };
 
-  const handleSuggestClick = async () => {
+  const handleSuggestClick = () => {
     console.log("inside handle suggest click")
     if (!formRef.current) return;
 
@@ -142,15 +142,27 @@ export function ListingForm() {
             placeholder="Describe the material, its condition, and any other relevant details. Our AI will suggest categories based on this."
             className="min-h-[120px]"
           />
-        {descriptionError && (
-            <p className="text-sm text-destructive">
-              {descriptionError}
-            </p>
+          {descriptionError && (
+              <p className="text-sm text-destructive">
+                {descriptionError}
+              </p>
           )}
         </div>
-        <div className="flex flex-col sm:flex-row items-start gap-4">
-            {selectedCategories.length > 0 && (
-            <div className="space-y-2 flex-grow">
+        
+        <div className="space-y-4">
+          <div className="flex items-end justify-end">
+            <Button type="button" variant="outline" onClick={handleSuggestClick} disabled={isSuggesting}>
+              {isSuggesting ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <Sparkles className="mr-2 h-4 w-4" />
+              )}
+              Suggest Categories
+            </Button>
+          </div>
+
+          {selectedCategories.length > 0 && (
+            <div className="space-y-2">
                 <Label>Suggested Categories</Label>
                 <Alert>
                     <AlertDescription className="flex flex-wrap gap-2">
@@ -165,17 +177,7 @@ export function ListingForm() {
                     </AlertDescription>
                 </Alert>
             </div>
-            )}
-           <div className="w-full sm:w-auto flex-shrink-0 pt-5">
-               <Button type="button" variant="outline" onClick={handleSuggestClick} disabled={isSuggesting} className="w-full sm:w-auto">
-                {isSuggesting ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  <Sparkles className="mr-2 h-4 w-4" />
-                )}
-                Suggest Categories
-              </Button>
-           </div>
+          )}
         </div>
       </div>
       
