@@ -1,4 +1,18 @@
 import type { LucideIcon } from 'lucide-react';
+import {
+    Bot,
+    FileText,
+    GlassWater,
+    Hammer,
+    HardwoodFloor,
+    Shirt,
+    Apple,
+    Laptop,
+    Building2,
+    FlaskConical,
+    Archive
+} from 'lucide-react';
+
 
 export type BusinessProfile = {
   id: string;
@@ -64,15 +78,15 @@ export type WasteCategory =
   | 'Other';
 
 export const wasteCategories: { name: WasteCategory, icon: LucideIcon }[] = [
-    { name: 'Plastic', icon: require('lucide-react').Bot },
-    { name: 'Paper', icon: require('lucide-react').FileText },
-    { name: 'Glass', icon: require('lucide-react').GlassWater },
-    { name: 'Metal', icon: require('lucide-react').Hammer },
-    { name: 'Wood', icon: require('lucide-react').HardwoodFloor },
-    { name: 'Textiles', icon: require('lucide-react').Shirt },
-    { name: 'Organic Waste', icon: require('lucide-react').Apple },
-    { name: 'Electronics', icon: require('lucide-react').Laptop },
-    { name: 'Construction Debris', icon: require('lucide-react').Building2 },
-    { name: 'Chemicals', icon: require('lucide-react').FlaskConical },
-    { name: 'Other', icon: require('lucide-react').Archive },
+    { name: 'Plastic', icon: Bot },
+    { name: 'Paper', icon: FileText },
+    { name: 'Glass', icon: GlassWater },
+    { name: 'Metal', icon: Hammer },
+    { name: 'Wood', icon: HardwoodFloor },
+    { name: 'Textiles', icon: Shirt },
+    { name: 'Organic Waste', icon: Apple },
+    { name: 'Electronics', icon: Laptop },
+    { name: 'Construction Debris', icon: Building2 },
+    { name: 'Chemicals', icon: FlaskConical },
+    { name: 'Other', icon: Archive },
 ];
