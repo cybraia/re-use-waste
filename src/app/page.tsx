@@ -26,8 +26,8 @@ export default function LandingPage() {
       </header>
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="py-24">
-          <div className="container text-center">
+        <section className="w-full py-24">
+          <div className="container px-4 md:px-6 text-center">
             <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4">
               Turn Your Waste into Value
             </h1>
@@ -43,8 +43,8 @@ export default function LandingPage() {
         </section>
 
         {/* Features Section */}
-        <section className="py-24 bg-muted/40">
-          <div className="container">
+        <section className="w-full py-24 bg-muted/40">
+          <div className="container px-4 md:px-6">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold">Why Choose EcoSwap?</h2>
               <p className="text-muted-foreground">Unlock economic and environmental benefits.</p>
@@ -88,8 +88,8 @@ export default function LandingPage() {
         </section>
 
         {/* How it Works Section */}
-        <section className="py-24">
-            <div className="container grid md:grid-cols-2 gap-12 items-center">
+        <section className="w-full py-24">
+            <div className="container grid md:grid-cols-2 gap-12 items-center px-4 md:px-6">
                 <div>
                     <h2 className="text-3xl font-bold mb-4">Simple, Efficient, and Impactful</h2>
                     <ol className="space-y-6">
