@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useState, useEffect, useRef } from 'react';
+import { useActionState, useState, useEffect, useRef, useTransition } from 'react';
 import { getCategoriesForDescription } from '@/app/actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -25,7 +25,7 @@ const initialState = {
 export function ListingForm() {
   const [state, formAction] = useActionState(getCategoriesForDescription, initialState);
   const [selectedCategories, setSelectedCategories] = useState<WasteCategory[]>([]);
-  const [isSuggesting, setIsSuggesting] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
@@ -36,7 +36,6 @@ export function ListingForm() {
       const newCategories = state.categories.filter(cat => !selectedCategories.includes(cat));
       setSelectedCategories(prev => [...prev, ...newCategories]);
     }
-    setIsSuggesting(false);
   }, [state]);
   
   const handleRemoveCategory = (categoryToRemove: WasteCategory) => {
@@ -46,9 +45,10 @@ export function ListingForm() {
   const handleSuggestClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     if (formRef.current) {
-      setIsSuggesting(true);
       const formData = new FormData(formRef.current);
-      formAction(formData);
+      startTransition(() => {
+        formAction(formData);
+      });
     }
   };
   
@@ -142,8 +142,8 @@ export function ListingForm() {
             </div>
             )}
            <div className="flex items-center justify-end flex-grow">
-               <Button type="button" variant="outline" disabled={isSuggesting} onClick={handleSuggestClick}>
-                {isSuggesting ? (
+               <Button type="button" variant="outline" disabled={isPending} onClick={handleSuggestClick}>
+                {isPending ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : (
                   <Sparkles className="mr-2 h-4 w-4" />
