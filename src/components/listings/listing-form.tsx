@@ -31,6 +31,7 @@ export function ListingForm() {
   };
 
   const handleSuggestClick = async () => {
+    console.log("inside handle suggest click")
     if (!formRef.current) return;
 
     const formData = new FormData(formRef.current);
