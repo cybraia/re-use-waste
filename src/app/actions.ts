@@ -11,6 +11,8 @@ const getCategoriesSchema = z.object({
 });
 
 export async function getCategoriesForDescription(prevState: any, formData: FormData) {
+  console.log('getCategoriesForDescription called');
+  
   const validatedFields = getCategoriesSchema.safeParse({
     description: formData.get('description'),
   });
@@ -51,19 +53,24 @@ export async function getCategoriesForDescription(prevState: any, formData: Form
   }
 }
 
-
 const createListingSchema = z.object({
   type: z.enum(['offer', 'request']),
   name: z.string().min(3, { message: "Material name must be at least 3 characters long." }),
   quantity: z.coerce.number().min(0, { message: "Quantity must be a positive number." }),
   unit: z.enum(['kg', 'ton', 'items', 'm³']),
   location: z.string().min(3, { message: "Location is required." }),
-  description: z.string(),
-  categories: z.array(z.string()).optional().default([]),
+  description: z.string().optional().default(''),
+  categories: z.array(z.enum([
+    'Plastic', 'Paper', 'Glass', 'Metal', 'Wood', 'Textiles',
+    'Organic Waste', 'Electronics', 'Construction Debris',
+    'Chemicals', 'Other'
+  ])).optional().default([]),
 });
 
 export async function createListing(formData: FormData) {
+  console.log('createListing called');
   const categoryValues = formData.getAll('categories[]');
+  
   const validatedFields = createListingSchema.safeParse({
     type: formData.get('type'),
     name: formData.get('name'),
@@ -101,15 +108,21 @@ export async function createListing(formData: FormData) {
     ...rest,
   };
 
-  // Prepend to the in-memory array
-  listings.unshift(newListing);
+  try {
+    listings.unshift(newListing);
+    revalidatePath('/listings');
+    revalidatePath('/listings/my-listings');
+    revalidatePath('/dashboard');
 
-  revalidatePath('/listings');
-  revalidatePath('/listings/my-listings');
-  revalidatePath('/dashboard');
-
-  return {
-    message: 'Listing created successfully!',
-    errors: {},
-  };
+    return {
+      message: 'Listing created successfully!',
+      errors: {},
+    };
+  } catch (error) {
+    console.error('Error creating listing:', error);
+    return {
+      message: 'Failed to create listing.',
+      errors: { general: ['An error occurred while creating the listing.'] },
+    };
+  }
 }

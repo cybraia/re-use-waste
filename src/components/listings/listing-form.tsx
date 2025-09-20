@@ -51,15 +51,23 @@ export function ListingForm() {
     });
   };
   
-  const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!formRef.current) return;
-
+  
     const formData = new FormData(formRef.current);
-    selectedCategories.forEach(cat => formData.append('categories[]', cat));
-
+    
+    // Clear any existing categories[] entries first
+    formData.delete('categories[]');
+    
+    // Add selected categories
+    selectedCategories.forEach(cat => {
+      formData.append('categories[]', cat);
+    });
+  
     startCreatingTransition(async () => {
       const result = await createListing(formData);
+      
       if (result.message === 'Listing created successfully!') {
         toast({
           title: "Listing Created!",
@@ -68,9 +76,9 @@ export function ListingForm() {
         router.push('/listings/my-listings');
       } else {
         console.error("Failed to create listing:", result.errors);
-         toast({
+        toast({
           title: "Error",
-          description: "Could not create the listing. Please check the form for errors.",
+          description: result.message || "Could not create the listing. Please check the form.",
           variant: "destructive",
         });
       }

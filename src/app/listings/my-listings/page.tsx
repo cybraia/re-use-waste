@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { PlusCircle } from 'lucide-react';
 
 export default function MyListingsPage() {
-  const myListings = listings.filter(listing => listing.companyId === userProfile.id);
+  const myListings = listings.filter(listing => listing.companyId === 'user');
 
   return (
     <AppLayout>
